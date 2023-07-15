@@ -6,13 +6,11 @@
 {
   "questions": [
     {
-      // raw text
       "content": "What is the capital of France?",
       "choices": ["Paris", "London", "Berlin", "Madrid"],
       "answer": 0
     },
     {
-      // with italic and bold
       "content": [
         "What is the capital of ",
         { "text": "France", "style": ["bold", "italic"] },
@@ -22,13 +20,11 @@
       "answer": 0
     },
     {
-      // with image
       "content": ["Where is this place?", { "image": "https://example.com" }],
       "choices": ["Paris", "London", "Berlin", "Madrid"],
       "answer": 0
     },
     {
-      // with inline image (math equation)
       "content": [
         "Given",
         { "inline-image": "https://example.com/equation-1" },

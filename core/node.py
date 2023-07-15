@@ -23,6 +23,24 @@ class Node:
     
     return self.italic == other.italic and self.bold == other.bold and self.underline == other.underline and self.color == other.color and self.super_script == other.super_script and self.sub_script == other.sub_script
   
+  def count_diff(self, other):
+    """Count the number of different styles between this node and the other node."""
+    count = 0
+    
+    if self.italic != other.italic:
+      count += 1
+    
+    if self.bold != other.bold:
+      count += 1
+    
+    if self.underline != other.underline:
+      count += 1
+    
+    if self.color != other.color:
+      count += 1
+    
+    return count
+  
   def concat(self, other):
     """Concat the other node to this node."""
     self.text += other.text

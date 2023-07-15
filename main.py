@@ -7,3 +7,6 @@ for i, question in enumerate(converter.questions):
   for choice in question['choices']:
     print([str(node) for node in choice])
   print()
+  
+print(converter.question_labels)
+  

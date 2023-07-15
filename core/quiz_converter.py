@@ -22,6 +22,19 @@ class QuizConverter:
 
     self._scan()
   
+  def _fix_nodes(self, nodes):
+    """Remove empty nodes and tab symbols from the list of nodes."""
+    
+    new_nodes = []
+    for node in nodes:
+      if node.text is None:
+        new_nodes.append(node)
+      elif node.text.strip() != '':
+        node.text = node.text.replace('\t', '')
+        new_nodes.append(node)
+        
+    return new_nodes
+  
   def _scan(self):
     """Scan and parse the document."""
     
@@ -29,6 +42,7 @@ class QuizConverter:
     self._scan_label()
 
     current_question = None
+    current_choice_label = None
     scanning_target = None
 
     for paragraph in self.paragraphs:
@@ -42,6 +56,7 @@ class QuizConverter:
         self.questions.append(current_question)
         i = len(self.question_labels)
         scanning_target = "<content>"
+        current_choice_label = None
 
       elif self._is_start_of_choice(paragraph):
         # start scanning choices
@@ -49,6 +64,7 @@ class QuizConverter:
         letter = extract_index_letter(node.text) 
         scanning_target = ord(letter.lower()) - ord('a')
         i = 1
+        current_choice_label = node
       elif scanning_target != "<content>":
         continue
 
@@ -60,7 +76,7 @@ class QuizConverter:
             current_question['content'].append(node)
           else:
             current_question['choices'][scanning_target].append(node)
-        elif is_index_letter(node.text):
+        elif self._is_choice_label(node):
           # start scanning choices
           letter = extract_index_letter(node.text) 
           scanning_target = ord(letter.lower()) - ord('a')
@@ -80,6 +96,11 @@ class QuizConverter:
       
       if scanning_target != "<content>":
         scanning_target = None
+        
+    for question in self.questions:
+      question['content'] = self._fix_nodes(question['content'])
+      for j in range(len(question['choices'])):
+        question['choices'][j] = self._fix_nodes(question['choices'][j])
 
   def _scan_paragraphs(self):
     """Scan all paragraphs in the document then convert them to nodes."""
@@ -118,17 +139,17 @@ class QuizConverter:
           subtexts = text.split(' ')
           for j, text_ in enumerate(subtexts):          
             node = Node()
-            node.italic = run.italic
-            node.bold = run.bold
-            node.underline = run.underline
-            node.color = run.font.color.rgb
+            node.italic = run.italic is not None
+            node.bold = run.bold is not None
+            node.underline = run.underline is not None
+            node.color = run.font.color.rgb if run.font.color.rgb is not None else docx.shared.RGBColor(0, 0, 0)
             node.super_script = super_script
             node.sub_script = sub_script
             
             node.text = text_
             if j != len(subtexts) - 1:
               node.text += ' '
-            
+              
             paragraph_.append(node)
 
       self.paragraphs.append(paragraph_)
@@ -138,16 +159,52 @@ class QuizConverter:
     
     # Count the number of each word in the first `MAX_LABEL_LENGTH` nodes of each paragraph
     counters = [{} for _ in range(self.MAX_LABEL_LENGTH)]
+    
+    choice_symbol_counters = {}
+    choice_italic = 0
+    choice_bold = 0
+    choice_underline = 0
+    choice_color_counters = {}
 
     for paragraph in self.paragraphs:
       if len(paragraph) < self.MAX_LABEL_LENGTH:
         continue
       
+      # check choice label
+      first_node = paragraph[0]
+      if first_node.text is not None and is_index_letter(first_node.text):
+        symbol = first_node.text.strip()[1] if len(first_node.text.strip()) > 1 else ""
+        
+        if symbol not in choice_symbol_counters:
+          choice_symbol_counters[symbol] = 0
+        
+        choice_symbol_counters[symbol] += 1
+        
+        if first_node.italic:
+          choice_italic += 1
+        else:
+          choice_italic -= 1
+          
+        if first_node.bold:
+          choice_bold += 1
+        else:
+          choice_bold -= 1
+          
+        if first_node.underline:
+          choice_underline += 1
+        else:
+          choice_underline -= 1
+          
+        if first_node.color not in choice_color_counters:
+          choice_color_counters[first_node.color] = 0
+          
+        choice_color_counters[first_node.color] += 1
+      
       for i in range(self.MAX_LABEL_LENGTH):
         node = paragraph[i]
         name = node.text
         
-        if node.text is None:
+        if node.text is None or node.text.strip() == "":
           continue
 
         if is_index_number(node.text):
@@ -160,6 +217,13 @@ class QuizConverter:
 
         counters[i][name] += 1
 
+    # find choice label style
+    self.choice_italic = choice_italic > 0
+    self.choice_bold = choice_bold > 0
+    self.choice_underline = choice_underline > 0
+    self.choice_symbol = max(choice_symbol_counters, key=choice_symbol_counters.get) if len(choice_symbol_counters) > 0 else None
+    self.choice_color = max(choice_color_counters, key=choice_color_counters.get) if len(choice_color_counters) > 0 else None
+  
     i = 0
     previous_label_count = None
 
@@ -183,7 +247,7 @@ class QuizConverter:
           break
 
       i += 1
-
+      
   def _is_start_of_question(self, paragraph):
     """Check if the given paragraph starts with question labels."""
     
@@ -215,6 +279,31 @@ class QuizConverter:
     if node.text is None:
       return False
 
-    return is_index_letter(node.text)
-
+    return self._is_choice_label(node)
+  
+  def _is_choice_label(self, node):
+    if node.text is None or not is_index_letter(node.text):
+      return False
+    
+    if len(node.text.strip()) == 1:
+        if self.choice_symbol != '':
+          return False
+    elif node.text.strip()[1] != self.choice_symbol:
+      return False
+    
+    count = 0
+    
+    if node.italic == self.choice_italic:
+      count += 1
+      
+    if node.bold == self.choice_bold:
+      count += 1
+      
+    if node.underline == self.choice_underline:
+      count += 1
+      
+    if node.color == self.choice_color:
+      count += 1
+      
+    return count >= 3
     

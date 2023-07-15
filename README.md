@@ -2,6 +2,8 @@
 
 ### Output
 
+- type of style: `bold`, `italic`, `underline`, `superscript`, `subscript`
+
 ```json
 {
   "questions": [

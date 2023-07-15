@@ -8,7 +8,7 @@ def is_index_number(text):
 def is_index_letter(text):
   """Checks if the given text is an index letter."""
 
-  return re.match(r"^[a-dA-D][,.:);/]?$", text.strip()) is not None
+  return re.match(r"^[A-D][,.:);/]?$", text.strip()) is not None
 
 def extract_index_number(text):
   """Extracts the index number from the given text."""
@@ -18,4 +18,4 @@ def extract_index_number(text):
 def extract_index_letter(text):
   """Extracts the index letter from the given text."""
 
-  return re.match(r"[a-dA-D]", text.strip()).group(0)
+  return re.match(r"[A-D]", text.strip()).group(0)

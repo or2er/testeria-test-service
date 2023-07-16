@@ -1,4 +1,7 @@
-import os, docx
+import os
+import docx
+import uuid
+import zipfile
 from utils import *
 from .node import Node
 
@@ -10,18 +13,34 @@ class QuizConverter:
   #   "Câu hỏi 2" has a label length of 3
   MAX_LABEL_LENGTH = 5
 
-  def __init__(self, file_path):
-    self.file_path = file_path
-    self.document = docx.Document(file_path)
+  def __init__(self, file_obj):
+    self.file = file_obj
+    self.document = docx.Document(file_obj)
     self.question_labels = []
     self.questions = []
     self.paragraphs = []
+    self.id = uuid.uuid4().hex
     
     # mapping from relationship id to image file name
     self.rels = {}
 
     self._scan()
+    self._extract_images()
   
+  def _extract_images(self):
+    """Extract all images from the document and save to disk"""
+    
+    zip_obj = zipfile.ZipFile(self.file, 'r')
+    file_list = zip_obj.namelist()
+
+    media_folder = 'word/media/'
+
+    for file_name in file_list:
+      if file_name.startswith(media_folder):
+        zip_obj.extract(file_name, f'data/{self.id}/')
+
+    zip_obj.close()
+
   def _fix_nodes(self, nodes):
     """Remove empty nodes and tab symbols from the list of nodes."""
     
@@ -52,6 +71,7 @@ class QuizConverter:
         current_question = {
           'content': [],
           'choices': [[], [], [], []],
+          'answer': None
         }
         self.questions.append(current_question)
         i = len(self.question_labels)
@@ -65,6 +85,10 @@ class QuizConverter:
         scanning_target = ord(letter.lower()) - ord('a')
         i = 1
         current_choice_label = node
+
+        if (node.underline and not self.choice_underline) or (node.bold and not self.choice_bold) or (node.italic and not self.choice_italic) or (node.color != self.choice_color):
+          current_question["answer"] = scanning_target
+
       elif scanning_target != "<content>":
         continue
 
@@ -80,6 +104,9 @@ class QuizConverter:
           # start scanning choices
           letter = extract_index_letter(node.text) 
           scanning_target = ord(letter.lower()) - ord('a')
+
+          if (node.underline and not self.choice_underline) or (node.bold and not self.choice_bold) or (node.italic and not self.choice_italic) or (node.color != self.choice_color):
+            current_question["answer"] = scanning_target
           
         elif scanning_target == "<content>":
           if len(current_question['content']) > 0 and current_question['content'][-1].is_concatable_with(node):

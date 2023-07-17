@@ -1,4 +1,4 @@
-# Testeria Test Service
+# IAI Hackathon 2023 - Testeria - Flask Test Service
 
 ## Usage
 
@@ -28,7 +28,7 @@ Convert a .docx file to quiz test in json format.
 ### Output
 ```json
 {
-  "id": "00edc848672c4ec99e80947a0d8ee9ed",
+  "testid": "00edc848672c4ec99e80947a0d8ee9ed",
   "questions": [
     {
       "content": ["What is the capital of France?"],

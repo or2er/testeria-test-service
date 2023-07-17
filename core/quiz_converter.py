@@ -32,6 +32,7 @@ class QuizConverter:
         """Return the JSON representation of the quiz."""
 
         json = {
+            "testid": self.id,
             "questions": []
         }
 

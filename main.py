@@ -4,4 +4,3 @@ converter = QuizConverter('assets/example.docx')
 
 print(converter.get_json())
 print(converter.id)
-  

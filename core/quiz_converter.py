@@ -1,6 +1,7 @@
 import os
 import docx
 import uuid
+import re
 import zipfile
 from utils import *
 from .node import Node
@@ -32,6 +33,7 @@ class QuizConverter:
         """Return the JSON representation of the quiz."""
 
         json = {
+            "testid": self.id,
             "questions": []
         }
 
@@ -48,6 +50,8 @@ class QuizConverter:
             for i in range(len(question['choices'])):
                 for node in question['choices'][i]:
                     question_json['choices'][i].append(node.get_json())
+
+            question_json['answer'] = question['answer']
 
             json['questions'].append(question_json)
 
@@ -87,7 +91,6 @@ class QuizConverter:
         self._scan_label()
 
         current_question = None
-        current_choice_label = None
         scanning_target = None
 
         for paragraph in self.paragraphs:
@@ -164,6 +167,28 @@ class QuizConverter:
             for j in range(len(question['choices'])):
                 question['choices'][j] = self._fix_nodes(
                     question['choices'][j])
+
+        nquestions = len(self.questions)
+        index = 0
+        for table in self.document.tables:
+            ncols = len(table.columns)
+            nrows = len(table.rows)
+
+            if ncols * nrows >= nquestions:
+                for i in range(nrows):
+                    for j in range(ncols):
+                        text = table.cell(i, j).text
+
+                        if text is None:
+                            continue
+
+                        text = text.strip()
+
+                        if re.match(r'^\d*[ABCD]$', text) is not None and index < nquestions:
+                            self.questions[index]['answer'] = ord(
+                                text[-1]) - ord('A')
+                            index += 1
+                break
 
     def _scan_paragraphs(self):
         """Scan all paragraphs in the document then convert them to nodes."""

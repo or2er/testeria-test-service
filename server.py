@@ -1,5 +1,6 @@
 import flask
 import json
+import os
 from flask import request
 from core.quiz_converter import QuizConverter
 
@@ -24,7 +25,11 @@ def quiz2quiz():
     quiz_converter = QuizConverter(file)
     json_data = quiz_converter.get_json()
 
-    with open(f'data/{quiz_converter.id}/questions.json', 'w') as f:
+    path = f'data/{quiz_converter.id}'
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    with open(f'data/{quiz_converter.id}/questions.json', 'w', encoding='utf8') as f:
         json_questions = {
             'questions': []
         }
@@ -36,9 +41,9 @@ def quiz2quiz():
                 'choices': question['choices']
             })
 
-        json.dump(json_questions, f)
+        json.dump(json_questions, f, ensure_ascii=False)
 
-    with open(f'data/{quiz_converter.id}/answers.json', 'w') as f:
+    with open(f'data/{quiz_converter.id}/answers.json', 'w', encoding='utf8') as f:
         json_answers = {
             'answers': []
         }
@@ -46,7 +51,7 @@ def quiz2quiz():
         for question in json_data['questions']:
             json_answers['answers'].append(question['answer'])
 
-        json.dump(json_answers, f)
+        json.dump(json_answers, f, ensure_ascii=False)
 
     return {
         'testid': quiz_converter.id,

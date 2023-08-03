@@ -8,7 +8,6 @@ from .node import Node
 
 
 class QuizConverter:
-
     # The maximum length of a question label
     # Example:
     #   "Question 1" has a label length of 2
@@ -118,7 +117,8 @@ class QuizConverter:
                 if current_question == None:
                     continue
 
-                if (node.underline and not self.choice_underline) or (node.bold and not self.choice_bold) or (node.italic and not self.choice_italic) or (node.color != self.choice_color):
+                if (node.underline and not self.choice_underline) or (node.bold and not self.choice_bold) or (
+                        node.italic and not self.choice_italic) or (node.color != self.choice_color):
                     current_question["answer"] = scanning_target
 
             elif scanning_target != "<content>":
@@ -141,16 +141,20 @@ class QuizConverter:
                     letter = extract_index_letter(node.text)
                     scanning_target = ord(letter.lower()) - ord('a')
 
-                    if (node.underline and not self.choice_underline) or (node.bold and not self.choice_bold) or (node.italic and not self.choice_italic) or (node.color != self.choice_color):
+
+                    if (node.underline and not self.choice_underline) or (node.bold and not self.choice_bold) or (
+                            node.italic and not self.choice_italic) or (node.color != self.choice_color):
                         current_question["answer"] = scanning_target
 
                 elif scanning_target == "<content>":
-                    if len(current_question['content']) > 0 and current_question['content'][-1].is_concatable_with(node):
+                    if len(current_question['content']) > 0 and current_question['content'][-1].is_concatable_with(
+                            node):
                         current_question['content'][-1].concat(node)
                     else:
                         current_question['content'].append(node)
                 else:
-                    if len(current_question['choices'][scanning_target]) > 0 and current_question['choices'][scanning_target][-1].is_concatable_with(node):
+                    if len(current_question['choices'][scanning_target]) > 0 and \
+                            current_question['choices'][scanning_target][-1].is_concatable_with(node):
                         current_question['choices'][scanning_target][-1].concat(
                             node)
                     else:
@@ -230,7 +234,8 @@ class QuizConverter:
                         node.italic = run.italic is not None
                         node.bold = run.bold is not None
                         node.underline = run.underline is not None
-                        node.color = run.font.color.rgb if run.font.color.rgb is not None else docx.shared.RGBColor(  # type: ignore
+                        node.color = run.font.color.rgb if run.font.color.rgb is not None else docx.shared.RGBColor(
+                            # type: ignore
                             0, 0, 0)
                         node.super_script = super_script
                         node.sub_script = sub_script

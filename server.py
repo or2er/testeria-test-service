@@ -34,9 +34,10 @@ def quiz2quiz():
             'questions': []
         }
 
-        for question in json_data['questions']:
+        for count, question in enumerate(json_data['questions'], start=1):
 
             json_questions['questions'].append({
+                'number': count,
                 'content': question['content'],
                 'choices': question['choices']
             })
@@ -48,8 +49,11 @@ def quiz2quiz():
             'answers': []
         }
 
-        for question in json_data['questions']:
-            json_answers['answers'].append(question['answer'])
+        for count, question in enumerate(json_data['questions'], start=1):
+            json_answers['answers'].append({
+                'number': count,
+                'answer': question['answer']
+            })
 
         json.dump(json_answers, f, ensure_ascii=False)
 

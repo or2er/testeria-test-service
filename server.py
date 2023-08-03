@@ -34,7 +34,7 @@ def quiz2quiz():
             'questions': []
         }
 
-        for count, question in enumerate(json_data['questions'], start=1):
+        for count, question in enumerate(json_data['questions']):
 
             json_questions['questions'].append({
                 'number': count,
@@ -49,7 +49,7 @@ def quiz2quiz():
             'answers': []
         }
 
-        for count, question in enumerate(json_data['questions'], start=1):
+        for count, question in enumerate(json_data['questions']):
             json_answers['answers'].append({
                 'number': count,
                 'answer': question['answer']

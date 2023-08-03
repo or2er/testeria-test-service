@@ -141,7 +141,6 @@ class QuizConverter:
                     letter = extract_index_letter(node.text)
                     scanning_target = ord(letter.lower()) - ord('a')
 
-
                     if (node.underline and not self.choice_underline) or (node.bold and not self.choice_bold) or (
                             node.italic and not self.choice_italic) or (node.color != self.choice_color):
                         current_question["answer"] = scanning_target
@@ -173,6 +172,7 @@ class QuizConverter:
                     question['choices'][j])
 
         nquestions = len(self.questions)
+        print(nquestions)
         index = 0
         for table in self.document.tables:
             ncols = len(table.columns)
@@ -204,10 +204,18 @@ class QuizConverter:
 
         for paragraph in self.document.paragraphs:
             paragraph_ = []
+            skip = []
+            for count, run in enumerate(paragraph.runs):
+                cur = run.text
+                prev = paragraph.runs[count - 1].text
+                if (is_index_number(cur) is True) and (is_index_number(prev) is True):
+                    paragraph.runs[count - 1].text += cur
+                    skip.append(count)
 
-            for run in paragraph.runs:
+            for count, run in enumerate(paragraph.runs):
+                if count in skip:
+                    continue
                 text = run.text
-
                 # check if the run contains an inline image
                 if 'v:imagedata' in run._element.xml:
                     for key, value in self.rels.items():
@@ -347,6 +355,9 @@ class QuizConverter:
 
     def _is_start_of_question(self, paragraph):
         """Check if the given paragraph starts with question labels."""
+        for word in paragraph:
+            if (word is None) or (word.text == ''):
+                paragraph.remove(word)
 
         if len(paragraph) < len(self.question_labels):
             return False
@@ -363,7 +374,7 @@ class QuizConverter:
 
             i += 1
 
-        return i == len(self.question_labels)
+        return len(self.question_labels) - i <= 1
 
     def _is_start_of_choice(self, paragraph):
         """Check if the given paragraph starts with a choice label."""

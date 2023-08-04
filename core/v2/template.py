@@ -41,7 +41,8 @@ Result 2:
 """
 
 DOC2QUIZ_TEMPLATE = """Given the following document, please generate as much as possible quiz questions with 4 choices and 1 correct answer.
-You should have variety of difficulty levels (easy, medium, hard).
+Using various types of questions: What is, Where is, When is, Who is, Why is, How is, etc.
+Must not use 'What is' or 'What are' in the beginning of the question.
 Easy questions should be directly stated in the document.
 Medium questions should be based on the information in the document but not directly stated.
 Hard questions likely require some inference and require outside knowledge.

@@ -30,7 +30,7 @@ python server.py
 {
     "questions": [
         {
-            "number": 1,
+            "number": 0,
             "content": [
                 "Nếu ",
                 {
@@ -70,7 +70,7 @@ python server.py
             ]
         },
         {
-            "number": 2,
+            "number": 1,
             "content": [
                 "Cho khối lăng trụ có diện tích đáy là ",
                 {
@@ -111,7 +111,7 @@ python server.py
         },
         ...
         {
-            "number": 50,
+            "number": 49,
             "content": [
                 "Có bao nhiêu giá trị nguyên dương của tham số ",
                 {
@@ -161,24 +161,24 @@ python server.py
 {
     "answers": [
         {
-            "number": 1,
+            "number": 0,
             "answer": 0
         },
         {
-            "number": 2,
+            "number": 1,
             "answer": 1
         },
         {
-            "number": 3,
+            "number": 2,
             "answer": 3
         },
         {
-            "number": 4,
+            "number": 3,
             "answer": 2
         },
         ...
         {
-            "number": 50,
+            "number": 49,
             "answer": 0
         }
     ]

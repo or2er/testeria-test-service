@@ -68,6 +68,13 @@ class Quiz2QuizConverter:
             if len(lines) < 6:
                 continue
 
+            answer = lines[6][8]
+
+            if answer not in ['A', 'B', 'C', 'D']:
+                answer = -1
+            else:
+                answer = ord(answer) - ord('A')
+
             questions.append({
                 "index": int(lines[0]),
                 "content": lines[1],
@@ -77,7 +84,7 @@ class Quiz2QuizConverter:
                     lines[4][3:],
                     lines[5][3:]
                 ],
-                "answer": None if lines[6][8:] == "None" else lines[6][8:],
+                "answer": answer,
                 "difficulty": "easy"
             })
 

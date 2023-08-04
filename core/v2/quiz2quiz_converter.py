@@ -65,7 +65,7 @@ class Quiz2QuizConverter:
 
             lines = q_text.split("\n")
 
-            if len(lines) < 6:
+            if len(lines) < 7:
                 continue
 
             answer = lines[6][8]

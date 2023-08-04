@@ -1,5 +1,4 @@
-QUIZ2QUIZ_TEMPLATE = """
-Your job is extracting and generating quiz questions from text.
+QUIZ2QUIZ_TEMPLATE = """Your job is extracting and generating quiz questions from text.
 Questions must have 4 choices. Otherwise, skip the question.
 If no question can be generated, respond with "<empty>".
 Correct choice can have different styles from other choices.
@@ -46,6 +45,8 @@ You should have variety of difficulty levels (easy, medium, hard).
 Easy questions should be directly stated in the document.
 Medium questions should be based on the information in the document but not directly stated.
 Hard questions likely require some inference and require outside knowledge.
+If no question can be generated, respond with "<empty>"
+Every text should have at least 1 question for each difficulty level.
 
 Document 1:
 <Begin Document>

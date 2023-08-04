@@ -27,40 +27,131 @@ python server.py
 
 ### Output (json file)
 ```json
-"questions": [
-    {
-      "content": ["What is the capital of France?"],
-      "choices": [["Paris"], ["London"], ["Berlin"], ["Madrid"]],
-    },
-    {
-      "content": [
-        "What is the capital of ",
-        { "text": "France", "style": ["bold", "italic"] },
-        "?"
-      ],
-      "choices": [["Paris"], ["London"], ["Berlin"], ["Madrid"]],
-    },
-    {
-      "content": ["Where is this place?", { "image": "image-0.jpg" }],
-      "choices": [["Paris"], ["London"], ["Berlin"], ["Madrid"]],
-    },
-    {
-      "content": [
-        "Given",
-        { "inline-image": "image-1.jpg" },
-        "and",
-        { "inline-image": "image-2.jpg" },
-        "what is the value of",
-        { "inline-image": "image-3.jpg" }
-      ],
-      "choices": [
-        [{ "inline-image": "image-4.jpg" }],
-        [{ "inline-image": "image-5.jpg" }],
-        [{ "inline-image": "image-6.jpg" }],
-        [{ "inline-image": "image-7.jpg" }]
-      ],
-    }
-  ]
+{
+    "questions": [
+        {
+            "number": 0,
+            "content": [
+                "Nếu ",
+                {
+                    "inline_image": "image1.wmf"
+                },
+                " thì ",
+                {
+                    "inline_image": "image2.wmf"
+                },
+                " bằng"
+            ],
+            "choices": [
+                [
+                    {
+                        "inline_image": "image3.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image4.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image5.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image6.wmf"
+                    },
+                    "."
+                ]
+            ]
+        },
+        {
+            "number": 1,
+            "content": [
+                "Cho khối lăng trụ có diện tích đáy là ",
+                {
+                    "inline_image": "image7.wmf"
+                },
+                "và chiều cao ",
+                {
+                    "inline_image": "image8.wmf"
+                },
+                " Thể tích khối lăng trụ đã cho bằng"
+            ],
+            "choices": [
+                [
+                    {
+                        "inline_image": "image9.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image10.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image11.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image12.wmf"
+                    },
+                    "."
+                ]
+            ]
+        },
+        ...
+        {
+            "number": 49,
+            "content": [
+                "Có bao nhiêu giá trị nguyên dương của tham số ",
+                {
+                    "inline_image": "image361.wmf"
+                },
+                " để hàm số ",
+                {
+                    "inline_image": "image362.wmf"
+                },
+                " có đúng ba điểm cực trị "
+            ],
+            "choices": [
+                [
+                    {
+                        "inline_image": "image363.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image364.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image365.wmf"
+                    },
+                    "."
+                ],
+                [
+                    {
+                        "inline_image": "image366.wmf"
+                    },
+                    ". "
+                ]
+            ]
+        }
+    ]
+}
 ```
 
 - `GET /data/:id/answers`
@@ -68,13 +159,29 @@ python server.py
 ### Output
 ```json
 {
-  "answers": [
-    1, 
-    0,
-    3,
-    2,
-    3,
-  ]
+    "answers": [
+        {
+            "number": 0,
+            "answer": 0
+        },
+        {
+            "number": 1,
+            "answer": 1
+        },
+        {
+            "number": 2,
+            "answer": 3
+        },
+        {
+            "number": 3,
+            "answer": 2
+        },
+        ...
+        {
+            "number": 49,
+            "answer": 0
+        }
+    ]
 }
 ```
 

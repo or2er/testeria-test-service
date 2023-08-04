@@ -1,7 +1,12 @@
-from core.quiz_converter import QuizConverter
+from core.v2.quiz2quiz_converter import Quiz2QuizConverter
+from core.v2.scanner import DocxScanner
 
-converter = QuizConverter('assets/gdcd.docx')
+scanner = DocxScanner('assets/gdcd.docx')
+scanner.scan_elements()
 
-print(converter.get_json())
-print(converter.id)
-  
+full_text = scanner.text()
+print(full_text)
+converter = Quiz2QuizConverter(full_text)
+converter.convert()
+
+print(converter.questions)

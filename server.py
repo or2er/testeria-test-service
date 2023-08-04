@@ -50,10 +50,7 @@ def quiz2quiz():
         }
 
         for count, question in enumerate(json_data['questions'], start=1):
-            json_answers['answers'].append({
-                'number': count,
-                'answer': question['answer']
-            })
+            json_answers['answers'].append(question['answer'])
 
         json.dump(json_answers, f, ensure_ascii=False)
 
@@ -78,4 +75,4 @@ def media(id, filename):
     return flask.send_from_directory(f'data/{id}/word/media', filename)
 
 
-app.run(port=8000, debug=True)
+app.run(port=8000, host="0.0.0.0")

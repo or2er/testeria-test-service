@@ -13,4 +13,4 @@ converter = Doc2QuizConverter(full_text)
 converter.convert()
 
 for question in converter.questions:
-    print(question["content"])
+    print(question["content"], question["difficulty"])

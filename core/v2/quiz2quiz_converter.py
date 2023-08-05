@@ -7,11 +7,13 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain import PromptTemplate
 from time import time
 from uuid import uuid4
+import re
 
 
 class Quiz2QuizConverter:
 
-    def __init__(self, document):
+    def __init__(self, document, docx=None):
+        self.docx = docx
         self.id = str(uuid4())
         self.document = document
         self.prompt = PromptTemplate(
@@ -51,7 +53,32 @@ class Quiz2QuizConverter:
         for question in questions:
             self.questions[str(question["index"])] = question
 
+        self._detect_table_answers()
+
         print("Done in", time() - start, "s.")
+
+    def _detect_table_answers(self):
+        index = 1
+
+        for table in self.docx.tables:
+            ncols = len(table.columns)
+            nrows = len(table.rows)
+
+            if ncols * nrows >= len(self.questions):
+                for i in range(nrows):
+                    for j in range(ncols):
+                        text = table.cell(i, j).text
+
+                        if text is None:
+                            continue
+
+                        text = text.strip()
+
+                        if re.match(r'^\d*[ABCD]$', text) is not None and index <= len(self.questions):
+                            self.questions[str(index)]['answer'] = ord(
+                                text[-1]) - ord('A')
+                            index += 1
+                break
 
     def _extract_questions(self, response):
         q_texts = response.split("<question>")

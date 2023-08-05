@@ -52,6 +52,9 @@ class Doc2QuizConverter:
 
             self.questions += questions_
 
+            for question in questions_:
+                print(question["content"])
+
             print(f"Chunk {i+1}/{len(chunks)}")
 
             self.progress = (i + 1) / len(chunks)
@@ -69,11 +72,11 @@ class Doc2QuizConverter:
                 q1 = self.questions[i]
                 q2 = self.questions[j]
 
-                if cosine_similarity(q1["embeddings"], q2["embeddings"]) > 0.9:
+                if cosine_similarity(q1["embeddings"], q2["embeddings"]) > 0.95:
                     remove_questions.append(self.questions[j])
-                    print("Remove duplicate questions:")
-                    print(q1["content"])
-                    print(q2["content"])
+                    # print("Remove duplicate questions:")
+                    # print(q1["content"])
+                    # print(q2["content"])
 
         new_questions = []
         for i, question in enumerate(self.questions):

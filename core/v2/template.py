@@ -41,13 +41,12 @@ Result 2:
 """
 
 DOC2QUIZ_TEMPLATE = """Given the following document, please generate as much as possible quiz questions with 4 choices and 1 correct answer.
-Using various types of questions: What is, Where is, When is, Who is, Why is, How is, etc.
-Must not use 'What is' or 'What are' in the beginning of the question.
+Generate rich vocabulary questions (synonym, antonym, definition, etc.).
 Easy questions should be directly stated in the document.
 Medium questions should be based on the information in the document but not directly stated.
 Hard questions likely require some inference and require outside knowledge.
 If no question can be generated, respond with "<empty>"
-Every text should have at least 1 question for each difficulty level.
+Generate atleast 2 easy questions, 2 medium questions, and 1 hard question.
 
 Document 1:
 <Begin Document>
@@ -56,7 +55,7 @@ Hanoi is the capital of Vietname. It is located in the North of Vietnam.
 Result 1:
 <question>
 1
-What is the capital of Vietnam?
+Which city is the capital of Vietnam?
 A. Hanoi
 B. Ho Chi Minh City
 C. Da Nang

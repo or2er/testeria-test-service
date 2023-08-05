@@ -52,7 +52,7 @@ def quiz2quiz():
 
     full_text = scanner.text()
 
-    quiz_converter = Quiz2QuizConverter(full_text)
+    quiz_converter = Quiz2QuizConverter(full_text, scanner.doc)
 
     shit[quiz_converter.id] = quiz_converter
 
@@ -181,4 +181,4 @@ def media(id, filename):
     return flask.send_from_directory(f'data/{id}/word/media', filename)
 
 
-app.run(port=8000, host="0.0.0.0", debug=False)
+app.run(port=8000, host="0.0.0.0", debug=True)

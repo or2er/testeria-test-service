@@ -180,5 +180,5 @@ def answers(id):
 def media(id, filename):
     return flask.send_from_directory(f'data/{id}/word/media', filename)
 
-
-app.run(port=8000, host="0.0.0.0")
+# app.run(port=8000, host="0.0.0.0")
+app.run(port=8000, host="0.0.0.0", ssl_context=('/etc/letsencrypt/live/iaihackathon.engineer/fullchain.pem', '/etc/letsencrypt/live/iaihackathon.engineer/privkey.pem'))

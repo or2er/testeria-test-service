@@ -181,4 +181,4 @@ def media(id, filename):
     return flask.send_from_directory(f'data/{id}/word/media', filename)
 
 
-app.run(port=8000, host="0.0.0.0", debug=True)
+app.run(port=8000, host="0.0.0.0")

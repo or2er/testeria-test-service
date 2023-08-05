@@ -9,6 +9,7 @@ import os
 from time import sleep
 from threading import Thread
 from queue import Queue, Empty
+from random import shuffle
 
 tasks = Queue()
 
@@ -119,11 +120,18 @@ def doc2quiz():
 
     shit[quiz_converter.id] = quiz_converter
 
+    max_questions = int(request.args.get('num'))
+
     def convert():
 
         quiz_converter.convert()
 
         json_data = quiz_converter.questions
+
+        shuffle(json_data)
+
+        if (max_questions < len(json_data)):
+            json_data = json_data[:max_questions]
 
         path = f'data/{quiz_converter.id}'
         os.makedirs(path)

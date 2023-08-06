@@ -17,8 +17,8 @@ class Doc2QuizConverter:
             input_variables=["document"], template=DOC2QUIZ_TEMPLATE
         )
         self.text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=800,
-            chunk_overlap=400,
+            chunk_size=700,
+            chunk_overlap=300,
             length_function=tiktoken_len
         )
         self.chain = LLMChain(llm=llm, prompt=self.prompt)

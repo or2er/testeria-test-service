@@ -41,40 +41,64 @@ Result 2:
 """
 
 DOC2QUIZ_TEMPLATE = """Given the following document, please generate as much as possible quiz questions with 4 choices and 1 correct answer.
-Generate rich vocabulary questions (synonym, antonym, definition, etc.).
 Easy questions should be directly stated in the document.
 Medium questions should be based on the information in the document but not directly stated.
-Hard questions likely require some inference and require outside knowledge.
+Hard questions should be based on the information in the document but not directly stated and require some reasoning and inference.
 If no question can be generated, respond with "<empty>"
-Generate atleast 2 easy questions, 2 medium questions, and 1 hard question.
+Generate atleast 2 easy questions.
+Question language must be same as the document language.
 
-Document 1:
+Document:
 <Begin Document>
-Hanoi is the capital of Vietname. It is located in the North of Vietnam.
+Hà Nội là thủ đô của Việt Nam. Hà Nội nằm ở phía Bắc Việt Nam.
 <End Document>
-Result 1:
+Result:
 <question>
 1
-Which city is the capital of Vietnam?
-A. Hanoi
-B. Ho Chi Minh City
-C. Da Nang
-D. Can Tho
+Thành phố nào là thủ đô của Việt Nam?
+A. Hà Nội
+B. Hồ Chí Minh
+C. Đà Nẵng
+D. Hải Phòng
 Answer: A
 Difficulty: easy
 <question>
 2
-Where is Hanoi located?
-A. North
-B. South
-C. East
-D. West
+Hà Nội năm ở đâu?
+A. Phía Bắc Việt Nam
+B. Phía Nam Việt Nam
+C. Phía Đông Việt Nam
+D. Phía Tây Việt Nam
 Answer: A
 Difficulty: easy
 
-Document 2:
+Document:
+<Begin Document>
+Washington, D.C., formally the District of Columbia and also known as D.C. or Washington, is the capital city of the United States of America.
+<End Document>
+Result:
+<question>
+1
+What is the capital city of the United States of America?
+A. Washington, D.C.
+B. New York
+C. Los Angeles
+D. Chicago
+Answer: A
+Difficulty: easy
+<question>
+2
+What is the full name of Washington, D.C.?
+A. District of Columbia
+B. Washington
+C. Washington, D.C.
+D. United States of America
+Answer: A
+Difficulty: easy
+
+Document:
 <Begin Document>
 {document}
 <End Document>
-Result 2:
+Result:
 """

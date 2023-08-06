@@ -1,7 +1,7 @@
 from core.v2.doc2quiz_converter import Doc2QuizConverter
 from core.v2.scanner import DocxScanner
 
-scanner = DocxScanner('assets/vnu.docx')
+scanner = DocxScanner('assets/iaihackathon.docx')
 scanner.scan_elements()
 
 full_text = scanner.text()

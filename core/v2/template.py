@@ -40,19 +40,19 @@ Text 2:
 Result 2:
 """
 
-DOC2QUIZ_TEMPLATE = """Given the following document, please generate as much as possible quiz questions with 4 choices and 1 correct answer.
+DOC2QUIZ_TEMPLATE = """You are a teacher and you want to generate quiz questions from a document.
+A quiz question has 4 choices and 1 correct answer.
 Easy questions should be directly stated in the document.
-Medium questions should be based on the information in the document but not directly stated.
+Medium questions should be based on the information in the current document but not directly stated.
 Hard questions should be based on the information in the document but not directly stated and require some reasoning and inference.
 If no question can be generated, respond with "<empty>"
-Generate atleast 2 easy questions.
-Question language must be same as the document language.
+Generate atleast 3 easy questions, 1 medium questions.
 
-Document:
+Document 1:
 <Begin Document>
 Hà Nội là thủ đô của Việt Nam. Hà Nội nằm ở phía Bắc Việt Nam.
 <End Document>
-Result:
+Result 1:
 <question>
 1
 Thành phố nào là thủ đô của Việt Nam?
@@ -72,11 +72,11 @@ D. Phía Tây Việt Nam
 Answer: A
 Difficulty: easy
 
-Document:
+Document 2:
 <Begin Document>
 Washington, D.C., formally the District of Columbia and also known as D.C. or Washington, is the capital city of the United States of America.
 <End Document>
-Result:
+Result 2:
 <question>
 1
 What is the capital city of the United States of America?
@@ -96,9 +96,9 @@ D. United States of America
 Answer: A
 Difficulty: easy
 
-Document:
+Document 3:
 <Begin Document>
 {document}
 <End Document>
-Result:
+Result 3:
 """
